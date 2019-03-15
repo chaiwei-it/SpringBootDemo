@@ -1,0 +1,77 @@
+spring:
+  profiles:
+    active: dev
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/mood?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password:
+    name: test
+    # 使用druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    filters: stat
+    maxActive: 20
+    initialSize: 1
+    maxWait: 60000
+    minIdle: 1
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: select 'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxOpenPreparedStatements: 20
+  cache:
+    type: ehcache
+server:
+  port: 8801
+zookeeper: ${ZOOKEEPER_URL:localhost:2181}
+
+jwt:
+  secret: mySecret
+  expiration: 604800
+horizon:
+  server: ${HORIZON_SERVER:http://localhost:8201}
+  kong:
+    server: ${KONG_SERVER:http://localhost:8001}   #空网关配置
+    name: ${KONG_NAME:ranger-app}
+    enable: ${KONG_ENABLE:true}
+    cors: ${KONG_CORS:http://acegear.imrsq.com}
+redis:
+  host: ${REDIS_HOST:47.95.37.232}
+  port: ${REDIS_POT:6379}
+  auth: ${REDIS_AUTH:}
+
+mybatis:
+  mapperLocations: classpath:mapper/*.xml
+  typeAliasesPackage: com.mood.entity
+  configuration:
+    map-underscore-to-camel-case: true # 开启驼峰命名规则
+    use-generated-keys: true  # 使用jdbc的getGeneratedKeys 获取数据库自增主键
+    use-column-label: true # 使用列名替换别名 默认为true
+# 通用mapper
+mapper:
+  #mappers 多个接口时逗号隔开
+  not-empty: false
+  identity: MYSQL
+
+#pagehelper分页插件配置
+pagehelper:
+  helperDialect: mysql
+  pagehelper: reasonable=true
+  supportMethodsArguments: true
+  params: count=countSql
+
+
+
+logging:
+  com.mood.config: classpath:logback-spring.xml
+  level: debug
+---
+
+spring:
+  profiles: production
+  jpa:
+    hibernate:
+      ddl-auto: update
