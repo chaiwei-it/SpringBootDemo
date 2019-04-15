@@ -25,7 +25,7 @@ spring:
   cache:
     type: ehcache
 server:
-  port: 8801
+  port: 8881
 zookeeper: ${ZOOKEEPER_URL:localhost:2181}
 
 jwt:
